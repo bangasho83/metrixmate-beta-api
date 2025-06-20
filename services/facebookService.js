@@ -3,7 +3,7 @@ const logger = require('../utils/logger');
 
 class FacebookService extends MetaApiService {
   constructor() {
-    super();
+    super(process.env.META_PAGE_ACCESS_TOKEN);
     this.pageId = process.env.META_ACCOUNT_ID;
   }
 

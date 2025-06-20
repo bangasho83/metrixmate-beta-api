@@ -2,11 +2,11 @@ const axios = require('axios');
 const logger = require('../utils/logger');
 
 class MetaApiService {
-  constructor() {
+  constructor(accessToken) {
     this.baseUrl = 'https://graph.facebook.com/v18.0';
     this.appId = process.env.META_APP_ID;
     this.appSecret = process.env.META_APP_SECRET;
-    this.accessToken = process.env.META_ACCESS_TOKEN;
+    this.accessToken = accessToken || process.env.META_ACCESS_TOKEN;
     
     // Create axios instance with default config
     this.api = axios.create({

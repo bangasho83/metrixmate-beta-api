@@ -3,12 +3,12 @@ const logger = require('../utils/logger');
 
 class InstagramService extends MetaApiService {
   constructor() {
-    super();
-    this.businessAccountId = process.env.META_ACCOUNT_ID;
+    super(process.env.META_PAGE_ACCESS_TOKEN);
+    this.accountId = process.env.META_ACCOUNT_ID;
   }
 
   // Get Instagram business account info
-  async getBusinessAccountInfo(accountId = this.businessAccountId) {
+  async getBusinessAccountInfo(accountId = this.accountId) {
     try {
       return await this.get(`/${accountId}`, {
         fields: 'id,username,name,profile_picture_url,biography,followers_count,follows_count,media_count,website,verification_status'
@@ -20,7 +20,7 @@ class InstagramService extends MetaApiService {
   }
 
   // Get Instagram media (posts)
-  async getMedia(accountId = this.businessAccountId, limit = 25) {
+  async getMedia(accountId = this.accountId, limit = 25) {
     try {
       return await this.get(`/${accountId}/media`, {
         fields: 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count,owner,children{media_url,media_type}',
@@ -33,7 +33,7 @@ class InstagramService extends MetaApiService {
   }
 
   // Get Instagram stories
-  async getStories(accountId = this.businessAccountId) {
+  async getStories(accountId = this.accountId) {
     try {
       return await this.get(`/${accountId}/stories`, {
         fields: 'id,media_type,media_url,permalink,timestamp,insights.metric(impressions,reach,exits,replies)'
@@ -45,7 +45,7 @@ class InstagramService extends MetaApiService {
   }
 
   // Get Instagram insights
-  async getInsights(accountId = this.businessAccountId, metric = 'impressions', period = 'day', since = null, until = null) {
+  async getInsights(accountId = this.accountId, metric = 'impressions', period = 'day', since = null, until = null) {
     try {
       const params = {
         metric: metric,
@@ -88,7 +88,7 @@ class InstagramService extends MetaApiService {
   }
 
   // Get Instagram mentions
-  async getMentions(accountId = this.businessAccountId, limit = 25) {
+  async getMentions(accountId = this.accountId, limit = 25) {
     try {
       return await this.get(`/${accountId}/tags`, {
         fields: 'id,caption,media_type,media_url,permalink,timestamp,like_count,comments_count',
@@ -104,7 +104,7 @@ class InstagramService extends MetaApiService {
   async getHashtagInfo(hashtag) {
     try {
       return await this.get(`/ig_hashtag_search`, {
-        user_id: this.businessAccountId,
+        user_id: this.accountId,
         q: hashtag
       });
     } catch (error) {
@@ -117,7 +117,7 @@ class InstagramService extends MetaApiService {
   async getTopMediaForHashtag(hashtagId, limit = 25) {
     try {
       return await this.get(`/${hashtagId}/top_media`, {
-        user_id: this.businessAccountId,
+        user_id: this.accountId,
         fields: 'id,caption,media_type,media_url,permalink,timestamp,like_count,comments_count',
         limit: limit
       });
@@ -131,7 +131,7 @@ class InstagramService extends MetaApiService {
   async getRecentMediaForHashtag(hashtagId, limit = 25) {
     try {
       return await this.get(`/${hashtagId}/recent_media`, {
-        user_id: this.businessAccountId,
+        user_id: this.accountId,
         fields: 'id,caption,media_type,media_url,permalink,timestamp,like_count,comments_count',
         limit: limit
       });
@@ -142,7 +142,7 @@ class InstagramService extends MetaApiService {
   }
 
   // Get Instagram live media
-  async getLiveMedia(accountId = this.businessAccountId) {
+  async getLiveMedia(accountId = this.accountId) {
     try {
       return await this.get(`/${accountId}/media`, {
         fields: 'id,caption,media_type,media_url,permalink,timestamp,like_count,comments_count,insights.metric(impressions,reach,engagement,saved)',
@@ -155,7 +155,7 @@ class InstagramService extends MetaApiService {
   }
 
   // Get Instagram reels
-  async getReels(accountId = this.businessAccountId, limit = 25) {
+  async getReels(accountId = this.accountId, limit = 25) {
     try {
       return await this.get(`/${accountId}/media`, {
         fields: 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count,insights.metric(impressions,reach,engagement,saved)',
@@ -169,7 +169,7 @@ class InstagramService extends MetaApiService {
   }
 
   // Get Instagram carousel albums
-  async getCarouselAlbums(accountId = this.businessAccountId, limit = 25) {
+  async getCarouselAlbums(accountId = this.accountId, limit = 25) {
     try {
       return await this.get(`/${accountId}/media`, {
         fields: 'id,caption,media_type,media_url,permalink,timestamp,like_count,comments_count,children{media_url,media_type}',
@@ -183,7 +183,7 @@ class InstagramService extends MetaApiService {
   }
 
   // Get Instagram followers
-  async getFollowers(accountId = this.businessAccountId, limit = 100) {
+  async getFollowers(accountId = this.accountId, limit = 100) {
     try {
       return await this.get(`/${accountId}/followers`, {
         fields: 'id,username,profile_picture_url',
@@ -196,7 +196,7 @@ class InstagramService extends MetaApiService {
   }
 
   // Get Instagram following
-  async getFollowing(accountId = this.businessAccountId, limit = 100) {
+  async getFollowing(accountId = this.accountId, limit = 100) {
     try {
       return await this.get(`/${accountId}/follows`, {
         fields: 'id,username,profile_picture_url',

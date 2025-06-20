@@ -3,7 +3,7 @@ const logger = require('../utils/logger');
 
 class AdsService extends MetaApiService {
   constructor() {
-    super();
+    super(process.env.META_ACCESS_TOKEN);
     this.adsAccountId = process.env.META_ACCOUNT_ID;
   }
 
