@@ -11,7 +11,7 @@ class FacebookService extends MetaApiService {
   async getPageInfo(pageId = this.pageId) {
     try {
       return await this.get(`/${pageId}`, {
-        fields: 'id,name,username,fan_count,followers_count,verification_status,category,category_list,phone,website,location,hours,price_range,rating_count,overall_star_rating,cover,profile_picture'
+        fields: 'id,name,username,fan_count,followers_count,verification_status,category,category_list,phone,website,location,hours,price_range,rating_count,overall_star_rating,cover,picture'
       });
     } catch (error) {
       logger.error('Failed to get page info:', error.message);
