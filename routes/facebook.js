@@ -42,6 +42,53 @@ router.get('/page/:pageId?', async (req, res, next) => {
   }
 });
 
+// Get public page posts (using default account)
+router.get('/page/posts/public', async (req, res, next) => {
+  try {
+    const { error: limitError, value: limitValue } = limitSchema.validate({ limit: req.query.limit });
+    
+    if (limitError) {
+      return res.status(400).json({ 
+        error: 'Validation error', 
+        details: limitError.details
+      });
+    }
+
+    const posts = await facebookService.getPublicPagePosts(process.env.META_ACCOUNT_ID, limitValue.limit);
+    
+    res.json({
+      success: true,
+      data: posts
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Get public page posts (basic fields only)
+router.get('/page/:pageId/posts/public', async (req, res, next) => {
+  try {
+    const { error: pageError, value: pageValue } = pageIdSchema.validate({ pageId: req.params.pageId });
+    const { error: limitError, value: limitValue } = limitSchema.validate({ limit: req.query.limit });
+    
+    if (pageError || limitError) {
+      return res.status(400).json({ 
+        error: 'Validation error', 
+        details: [...(pageError?.details || []), ...(limitError?.details || [])]
+      });
+    }
+
+    const posts = await facebookService.getPublicPagePosts(pageValue.pageId, limitValue.limit);
+    
+    res.json({
+      success: true,
+      data: posts
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // Get page posts
 router.get('/page/:pageId/posts', async (req, res, next) => {
   try {

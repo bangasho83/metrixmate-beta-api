@@ -164,6 +164,19 @@ class FacebookService extends MetaApiService {
       throw error;
     }
   }
+
+  // Get public page posts (basic fields only)
+  async getPublicPagePosts(pageId = this.pageId, limit = 25) {
+    try {
+      return await this.get(`/${pageId}/posts`, {
+        fields: 'id,message,created_time,type,permalink_url',
+        limit: limit
+      });
+    } catch (error) {
+      logger.error('Failed to get public page posts:', error.message);
+      throw error;
+    }
+  }
 }
 
 module.exports = FacebookService; 
