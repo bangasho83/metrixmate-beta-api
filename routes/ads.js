@@ -34,7 +34,7 @@ router.get('/account/:accountId?', async (req, res, next) => {
       return res.status(400).json({ error: 'Validation error', details: error.details });
     }
 
-    const accountId = value.accountId || process.env.META_ADS_ACCOUNT_ID;
+    const accountId = value.accountId || process.env.META_ACCOUNT_ID;
     const accountInfo = await adsService.getAdAccountInfo(accountId);
     
     res.json({

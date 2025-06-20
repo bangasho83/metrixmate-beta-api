@@ -30,7 +30,7 @@ router.get('/page/:pageId?', async (req, res, next) => {
       return res.status(400).json({ error: 'Validation error', details: error.details });
     }
 
-    const pageId = value.pageId || process.env.FACEBOOK_PAGE_ID;
+    const pageId = value.pageId || process.env.META_ACCOUNT_ID;
     const pageInfo = await facebookService.getPageInfo(pageId);
     
     res.json({
