@@ -10,6 +10,15 @@ const instagramRoutes = require('./routes/instagram');
 const adsRoutes = require('./routes/ads');
 const errorHandler = require('./middleware/errorHandler');
 
+// Validate required environment variables
+const requiredEnvVars = ['META_ACCOUNT_ID', 'META_ACCESS_TOKEN'];
+const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+if (missingVars.length > 0) {
+  console.error('Missing required environment variables:', missingVars);
+  console.error('Please ensure all required environment variables are set in Vercel.');
+}
+
 const app = express();
 
 // Security middleware
@@ -41,7 +50,14 @@ app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
     timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development',
+    envVars: {
+      hasMetaAccountId: !!process.env.META_ACCOUNT_ID,
+      hasMetaAccessToken: !!process.env.META_ACCESS_TOKEN,
+      hasMetaAppId: !!process.env.META_APP_ID,
+      hasMetaAppSecret: !!process.env.META_APP_SECRET
+    }
   });
 });
 
